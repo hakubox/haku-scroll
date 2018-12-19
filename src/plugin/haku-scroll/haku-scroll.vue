@@ -71,7 +71,7 @@ export default {
             type: Number,
             default: 100
         },
-        //在动画开启后单步鼠标滚动时间
+        //单步鼠标滚动时间
         wheeltime: {
             type: Number,
             default: 200

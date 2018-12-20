@@ -1,16 +1,26 @@
 var path = require('path')
 var webpack = require('webpack')
+var CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
   entry: process.env.NODE_ENV == 'development' ? './src/main.js' : './src/plugin/haku-scroll/index.js',
   output: {
     path: path.resolve(__dirname, './dist'),
     publicPath: '/dist/',
-    filename: 'haku-scroll.js',
+    filename: process.env.NODE_ENV == 'development' ? 'build.js' : 'haku-scroll.js',
     library: 'haku-scroll',
     libraryTarget: 'umd',
     umdNamedDefine: true
   },
+  plugins: [
+    new CopyWebpackPlugin([
+        {
+            from: 'src/assets/',
+            to: 'dist',
+            toType: 'dir'
+        }
+    ])
+  ],
   module: {
     rules: [
       {
@@ -64,7 +74,7 @@ module.exports = {
         exclude: /node_modules/
       },
       {
-        test: /\.(png|jpg|gif|svg)$/,
+        test: /\.(png|jpg|gif|svg|ico)$/,
         loader: 'file-loader',
         options: {
           name: '[name].[ext]?[hash]'

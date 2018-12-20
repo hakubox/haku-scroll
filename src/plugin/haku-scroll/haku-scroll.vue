@@ -22,7 +22,6 @@
 
 <script>
 import liike from 'liike';
-import { clearTimeout } from 'timers';
 
 const scrollMove = (target, { x = null, y = null }) => {
     if(y) target.scrollTop = y;
@@ -177,7 +176,8 @@ export default {
         this.scrollBody.removeEventListener('scroll', scrollBodyScroll.bind(this));
         this.scroll.removeEventListener('mousedown', scrollMouseDown.bind(this));
         this.scroll.removeEventListener('mouseleave', scrollMouseLeave.bind(this));
-
+        //组件销毁
+        this.$emit('ondestroy', this);
     },
     methods: {
         /**
@@ -255,7 +255,7 @@ export default {
             });
         },
         /**
-         * @method 获取组件离离顶部的间距
+         * @method 获取距离视窗顶部的像素
          */
         getScrollTop() {
             let _el = this.scroll;
@@ -269,7 +269,7 @@ export default {
             return result;
         },
         /**
-         * @method 获取组件离离左部的间距
+         * @method 获取距离视窗左边缘的像素
          */
         getScrollLeft() {
             let _el = this.scroll;
@@ -644,6 +644,9 @@ export default {
             this.scrollContent.addEventListener('DOMNodeRemoved', this.refresh, false);
             this.scrollContent.addEventListener ('DOMAttrModified', this.refresh, false);
         }
+
+        //初始化
+        this.$emit('oninit', this);
     }
 }
 </script>

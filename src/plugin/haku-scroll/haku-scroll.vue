@@ -153,7 +153,7 @@ export default {
         scrollBodyLeft : 0,
         startDragOrigin : false,        //是否开始点击中键滚动
         tempLocation : { x: 0, y: 0 },  //临时用于计算的鼠标点击坐标点
-        elScrollTop : 0,                //wheel时临时计算的滚动条滚动距离
+        elScrollTop : 0,                //滚动条滚动距离，需要和this.scrollBody.scrollTop同步
         elScrollLeft : 0
     }),
     destroyed() {
@@ -330,6 +330,10 @@ export default {
             this.isVerticalBarDrag = false;
             this.isHorizontalBarDrag = false;
             this.isContentDrag = false;
+
+            this.elScrollTop = this.scrollBody.scrollTop;
+            this.elScrollLeft = this.scrollBody.scrollLeft;
+
             this.scrollBody.className = this.scrollBody.className.replace(/ (active-vertical|active-horizontal)/g, '');
         }
 
@@ -597,6 +601,8 @@ export default {
         //光标移出控件的事件
         scrollMouseLeave = (e) => {
             this.startDragOrigin = false;
+            this.elScrollTop = this.scrollBody.scrollTop;
+            this.elScrollLeft = this.scrollBody.scrollLeft;
             this.dragOrigin = '';
             _timer = null;
         }

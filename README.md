@@ -2,7 +2,7 @@
 <img src="https://raw.githubusercontent.com/hakubox/haku-scroll/master/src/assets/logo.png" >
 </div>
 
-# haku-scroll [![Build Status](https://travis-ci.org/hakubox/haku-scroll.svg?branch=master)](https://travis-ci.org/hakubox/haku-scroll) [![](https://img.shields.io/npm/dt/haku-scroll.svg)](https://www.npmjs.com/package/haku-scroll) [![](https://img.shields.io/github/issues/hakubox/haku-scroll.svg)](https://github.com/hakubox/haku-scroll/issues) ![](https://img.shields.io/github/stars/hakubox/haku-scroll.svg) ![](https://img.shields.io/github/license/hakubox/haku-scroll.svg) ![](https://img.shields.io/badge/IE-%E2%89%A5%209-blue.svg)
+# haku-scroll [![Build Status](https://travis-ci.org/hakubox/haku-scroll.svg?branch=master)](https://travis-ci.org/hakubox/haku-scroll) [![](https://img.shields.io/npm/dt/haku-scroll.svg)](https://www.npmjs.com/package/haku-scroll) ![](https://img.shields.io/github/license/hakubox/haku-scroll.svg) ![](https://img.shields.io/badge/IE-%E2%89%A5%209-blue.svg) ![](https://img.shields.io/npm/v/haku-scroll.svg) ![](https://img.shields.io/bundlephobia/min/haku-scroll.svg)
 
 > vue滚动条组件
 
@@ -84,3 +84,4 @@ ondestroy | - | 组件销毁
 - [ ] 滚动限制
 - [ ] 滚动事件钩子
 - [ ] 扩展至移动端
+- [ ] 拆为独立js组件

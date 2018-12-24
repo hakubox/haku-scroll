@@ -1,11 +1,12 @@
 <template>
-    <div class="block">
-        <div class="block-body" :class="dragOrigin">
+    <div class="haku-block" :class="{'scroll-auto-hide': scrollAutoHide}">
+        <div class="haku-block-body" :class="dragOrigin">
             <div :class="contentClass" :style="contentStyle" class="block-content">
                 <slot></slot>
             </div>
         </div>
-        <haku-scroll ref="scrollY" :is-hide="!(vertical && showVertical)" :size="pageHeight" :value.sync="scrollY" @scroll="setScrollY" :max-value="scrollMaxY" class="block-scroll-vertical"></haku-scroll>
+        <haku-scroll ref="scrollY" type="vertical" :is-hide="!vertical || !showVertical" :size="pageHeight" :value.sync="scrollY" @scroll="setScrollY" :max-value="scrollMaxY" class="auto-hide"></haku-scroll>
+        <haku-scroll ref="scrollX" type="horizontal" :is-hide="!horizontal || !showHorizontal" :size="pageWidth" :value.sync="scrollX" @scroll="setScrollX" :max-value="scrollMaxX" class="auto-hide"></haku-scroll>
     </div>
 </template>
 
@@ -32,65 +33,89 @@ export default {
         default_mixin
     },
     props: {
-        //内容类样式
+        /**
+         * @property {String} [contentClass] 内容类样式
+         */
         contentClass: {
             type: String,
             default: ''
         },
-        //内容样式
+        /**
+         * @property {String} [contentStyle] 内容样式
+         */
         contentStyle: {
             type: String,
             default: ''
         },
-        //是否启用平滑移动效果
+        /**
+         * @property {Boolean} [anime=true] 是否启用平滑移动效果
+         */
         anime: {
             type: Boolean,
             default: true
         },
-        //单步鼠标滚动距离
+        /**
+         * @property {Number} [wheelstep=100] 单步鼠标滚动距离
+         */
         wheelstep: {
             type: Number,
             default: 100
         },
-        //单步鼠标滚动时间
+        /**
+         * @property {Number} [wheeltime=200] 单步鼠标滚动时间
+         */
         wheeltime: {
             type: Number,
             default: 200
         },
-        //滚动时的运动曲线
+        /**
+         * @property {String} [wheelseaing='sineOut'] 滚动时的运动曲线
+         */
         wheelseaing: {
             type: String,
             default: 'sineOut'
         },
-        //纵向滚动条是否展现
+        /**
+         * @property {Boolean} [vertical=true] 纵向滚动条是否展现
+         */
         vertical: {
             type: Boolean,
             default: true
         },
-        //横向滚动条是否展现
+        /**
+         * @property {Boolean} [horizontal=false] 横向滚动条是否展现
+         */
         horizontal: {
             type: Boolean,
             default: false
         },
-        //是否监听子节点树（仅针对IE11及其他现代浏览器，使用可能降低性能）
+        /**
+         * @property {Boolean} [watchSubTree=false] 是否监听子节点树（仅针对IE11及其他现代浏览器，使用可能降低性能）
+         */
         watchSubTree: {
             type: Boolean,
             default: false
         },
-        //wheel滚动事件延伸至父容器
+        /**
+         * @property {Boolean} [parentScroll=false] wheel滚动事件延伸至父容器
+         */
         parentScroll: {
             type: Boolean,
             default: false
         },
-        //隐藏按钮
+        /**
+         * @property {Boolean} [hideButton=true] 隐藏按钮
+         */
         hideButton: {
             type: Boolean,
             default: true
         },
-        //自动隐藏滚动条
-        autoHide: {
+        /**
+         * @property {Boolean} [scrollAutoHide=true] 自动隐藏滚动条
+         */
+        scrollAutoHide: {
             type: Boolean,
-            default: false
+            default: true
         }
     },
     computed: {
@@ -102,6 +127,10 @@ export default {
         pageHeight: 0,
         scrollMaxY: 0,
         scrollY: 0,
+
+        pageWidth: 0,
+        scrollMaxX: 0,
+        scrollX: 0,
 
         block: null,
         blockBody: null,
@@ -177,6 +206,9 @@ export default {
         setScrollY(value) {
             this.scrollTo({y: value});
         },
+        setScrollX(value) {
+            this.scrollTo({x: value});
+        },
         /**
          * @method 滚动到某处
          * @param {Number} [param.x] x坐标
@@ -224,6 +256,9 @@ export default {
             this.pageHeight = (this.blockContent.offsetHeight - this.blockBody.offsetHeight) * (this.blockBody.offsetHeight / this.blockContent.offsetHeight);
             this.scrollMaxY = this.blockContent.offsetHeight - this.blockBody.offsetHeight;
 
+            this.scrollMaxX = this.blockContent.offsetWidth - this.blockBody.offsetWidth;
+            this.pageWidth = (this.blockContent.offsetWidth - this.blockBody.offsetWidth) * (this.blockBody.offsetWidth / this.blockContent.offsetWidth);
+
             this.$nextTick(() => {
                 if(this.vertical) {
                     this.paddingHeight = this.block.offsetHeight - this.blockBody.offsetHeight;
@@ -240,6 +275,7 @@ export default {
                 }
 
                 this.$refs.scrollY.refresh();
+                this.$refs.scrollX.refresh();
             });
         },
         /**
@@ -284,8 +320,6 @@ export default {
 
             this.elScrollTop = this.blockBody.scrollTop;
             this.elScrollLeft = this.blockBody.scrollLeft;
-
-            this.blockBody.className = this.blockBody.className.replace(/ (active-vertical|active-horizontal)/g, '');
         }
 
         let _timer = null;
@@ -318,7 +352,7 @@ export default {
                     this.blockBody.scrollLeft = this.elScrollLeft;
                 }
             }
-            
+
             this.$emit('scroll', { x: this.blockBody.scrollLeft, y: this.blockBody.scrollTop });
 
             //处理光标样式
@@ -355,7 +389,7 @@ export default {
         //根文档鼠标移动事件
         documentMouseMove = (e) => {
             //中键点击滚动
-            
+
             //拖拽内容（跟着滚动滚动条）
             if(this.isContentDrag) {
                 this.mouseMoveFn(e);
@@ -435,12 +469,7 @@ export default {
                 this.scrollY = this.blockBody.scrollTop;
             }
             if(this.horizontal) {
-                this.barLeft = this.blockBody.scrollLeft / this.blockContent.offsetWidth * this.scrollHorizontalRail.offsetWidth;
-                if(!this.ieVersion) {
-                    this.scrollHorizontalBar.style.transform = 'translateX(' + this.barLeft + 'px)';
-                } else if(this.ieVersion == 9 || this.ieVersion == 10) {
-                    this.scrollHorizontalBar.style.msTransform = 'translateX(' + this.barLeft + 'px)';
-                }
+                this.scrollX = this.blockBody.scrollLeft;
             }
         }
 
@@ -458,7 +487,7 @@ export default {
                 e.stopPropagation();
                 e.preventDefault();
             }
-            //this.scroll.className = this.scroll.className.split(' ').concat(['active']).join(' ');
+            //this.blockBody.className = this.blockBody.className.split(' ').concat(['active']).join(' ');
         }
 
         //光标移出控件的事件
@@ -517,150 +546,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    $scroll-width: 10px;
-    $scroll-bar-right: 6px;
-    $transition: 0.15s;
-
-    .block {
-        position: relative;
-        overflow: hidden;
-
-        &:hover {
-
-            > .scroll-vertical {
-                > .scroll-vertical-bar {
-                    opacity: 0.4;
-                }
-
-                > .scroll-vertical-rail {
-                    opacity: 0.2;
-                }
-
-                > .scroll-vertical-tool-up {
-                    opacity: 0.4;
-                }
-
-                > .scroll-vertical-tool-down {
-                    opacity: 0.4;
-                }
-            }
-
-            > .scroll-horizontal {
-                > .scroll-horizontal-bar {
-                    opacity: 0.4;
-                }
-
-                > .scroll-horizontal-rail {
-                    opacity: 0.2;
-                }
-
-                > .scroll-horizontal-tool-up {
-                    opacity: 0.4;
-                }
-
-                > .scroll-horizontal-tool-down {
-                    opacity: 0.4;
-                }
-            }
-
-        }
-
-        > .block-body {
-            position: relative;
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-
-            //原点
-            &.drag-origin {
-                cursor: all-scroll;
-            }
-            //竖向滚动
-            &.drag-origin-ew {
-                cursor: ew-resize;
-            }
-            //横向滚动
-            &.drag-origin-ns {
-                cursor: ns-resize;
-            }
-            //斜向滚动
-            &.drag-origin-nw {
-                cursor: nw-resize;
-            }
-            //斜向滚动
-            &.drag-origin-ne {
-                cursor: ne-resize;
-            }
-
-            > .block-content {
-                display: inline-block;
-                width: 100%;
-            }
-
-
-            &.active-vertical {
-                ~ .scroll-vertical {
-                    > .scroll-vertical-bar {
-                        opacity: 0.6;
-                    }
-                    > .scroll-vertical-rail {
-                        opacity: 0.25;
-                    }
-                    > .scroll-vertical-tool-up {
-                        opacity: 0.25;
-                    }
-                    > .scroll-vertical-tool-down {
-                        opacity: 0.25;
-                    }
-                }
-            }
-
-            &.active-horizontal {
-                ~ .scroll-horizontal {
-                    > .scroll-horizontal-bar {
-                        opacity: 0.6;
-                    }
-                    > .scroll-horizontal-rail {
-                        opacity: 0.25;
-                    }
-                    > .scroll-horizontal-tool-up {
-                        opacity: 0.25;
-                    }
-                    > .scroll-horizontal-tool-down {
-                        opacity: 0.25;
-                    }
-                }
-            }
-        }
-
-        &.shadow {
-            padding: 0px;
-
-            > .block-body {
-
-                >.block-content {
-                    box-shadow: 0px -48px 40px -40px inset rgba(0, 0, 0, 0.1),
-                                0px 48px 40px -40px inset rgba(0, 0, 0, 0.1);
-                }
-            }
-        }
-
-        > .block-scroll-vertical {
-            transition: $transition;
-            position: absolute;
-            top: 0px;
-            right: 0px;
-        }
-
-
-        > .scroll-horizontal {
-            transition: $transition;
-        }
-
-        > .scroll-hide {
-            opacity: 0.0 !important;
-            visibility: hidden !important;
-            z-index: -10 !important;
-        }
-    }
 </style>

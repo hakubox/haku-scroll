@@ -3,7 +3,7 @@ var webpack = require('webpack')
 var CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
-  entry: process.env.NODE_ENV == 'development' ? './src/main.js' : './src/plugin/haku-scroll/index.js',
+  entry: process.env.NODE_ENV == 'development' ? './src/main.js' : './src/plugin/index.js',
   output: {
     path: path.resolve(__dirname, './dist'),
     publicPath: '/dist/',
@@ -13,13 +13,13 @@ module.exports = {
     umdNamedDefine: true
   },
   plugins: [
-    new CopyWebpackPlugin([
-        {
-            from: 'src/assets/',
-            to: 'dist',
-            toType: 'dir'
-        }
-    ])
+    // new CopyWebpackPlugin([
+    //     {
+    //         from: 'src/assets/scss/common.scss',
+    //         to: 'dist',
+    //         toType: 'dir'
+    //     }
+    // ])
   ],
   module: {
     rules: [

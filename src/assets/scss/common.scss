@@ -1,0 +1,270 @@
+$transition: 0.15s;
+$scroll-width: 10px;
+$scroll-bar-padding: 15px;
+
+
+/************************************************************/
+/********************* Haku-Block 区域 **********************/
+/************************************************************/
+.haku-block {
+    position: relative;
+    overflow: hidden;
+
+    &.scroll-auto-hide {
+
+        > .haku-scroll {
+            opacity: 0.0;
+
+            > .haku-scroll-bar {
+            }
+
+            > .haku-scroll-rail {
+            }
+        }
+
+        &:hover {
+
+            > .haku-scroll {
+                opacity: 1;
+
+                > .haku-scroll-bar {
+                    opacity: 0.5;
+
+                    &:hover {
+                        opacity: 0.8;
+                    }
+                }
+
+                > .haku-scroll-rail {
+                    opacity: 0.5;
+
+                    &:hover {
+                        opacity: 0.8;
+                    }
+                }
+
+                &.active {
+
+                    > .haku-scroll-bar {
+                        opacity: 0.8;
+                    }
+
+                    > .haku-scroll-rail {
+                        opacity: 0.8;
+                    }
+                }
+            }
+        }
+    }
+
+    > .haku-block-body {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+
+        //原点
+        &.drag-origin {
+            cursor: all-scroll;
+        }
+        //竖向滚动
+        &.drag-origin-ew {
+            cursor: ew-resize;
+        }
+        //横向滚动
+        &.drag-origin-ns {
+            cursor: ns-resize;
+        }
+        //斜向滚动
+        &.drag-origin-nw {
+            cursor: nw-resize;
+        }
+        //斜向滚动
+        &.drag-origin-ne {
+            cursor: ne-resize;
+        }
+
+        > .block-content {
+            display: inline-block;
+        }
+    }
+
+    &.shadow {
+        padding: 0px;
+
+        > .block-body {
+
+            >.block-content {
+                box-shadow: 0px -48px 40px -40px inset rgba(0, 0, 0, 0.1),
+                            0px 48px 40px -40px inset rgba(0, 0, 0, 0.1);
+            }
+        }
+    }
+
+    > .haku-scroll.vertical {
+        transition: $transition;
+        position: absolute;
+        top: 15px;
+        height: calc(100% - 30px);
+        right: 5px;
+    }
+
+    > .haku-scroll.horizontal {
+        transition: $transition;
+        position: absolute;
+        bottom: 5px;
+        width: calc(100% - 30px);
+        left: 15px;
+    }
+
+    > .scroll-hide {
+        opacity: 0.0 !important;
+        visibility: hidden !important;
+        z-index: -10 !important;
+    }
+}
+
+/************************************************************/
+/******************* Haku-Scroll 滚动条 *********************/
+/************************************************************/
+.haku-scroll {
+    position: relative;
+    user-select: none;
+
+    &.active.auto-hide {
+        opacity: 1;
+
+        > .haku-scroll-bar {
+            opacity: 0.8;
+        }
+
+        > .haku-scroll-rail {
+            opacity: 0.8;
+        }
+    }
+
+    &.vertical {
+        height: 100%;
+        width: $scroll-width;
+
+        > .haku-scroll-bar {
+            width: $scroll-width;
+            top: 15px;
+        }
+
+        > .haku-scroll-rail {
+            width: $scroll-width;
+            height: calc(100% - 30px);
+            top: 15px;
+        }
+
+        > .haku-scroll-tool-start {
+            top: 0px;
+        }
+
+        > .haku-scroll-tool-end {
+            bottom: 0px;
+        }
+
+        &.hide-btn {
+
+            > .haku-scroll-bar {
+                top: 0px;
+            }
+
+            > .haku-scroll-rail {
+                width: $scroll-width;
+                height: 100%;
+                top: 0px;
+            }
+        }
+    }
+
+    &.horizontal {
+        width: 100%;
+        height: $scroll-width;
+
+        > .haku-scroll-bar {
+            height: $scroll-width;
+            left: 15px;
+        }
+
+        > .haku-scroll-rail {
+            height: $scroll-width;
+            width: calc(100% - 30px);
+            left: 15px;
+        }
+
+        > .haku-scroll-tool-start {
+            left: 0px;
+        }
+
+        > .haku-scroll-tool-end {
+            right: 0px;
+        }
+
+        &.hide-btn {
+
+            > .haku-scroll-bar {
+                left: 0px;
+            }
+
+            > .haku-scroll-rail {
+                width: 100%;
+                left: 0px;
+            }
+        }
+    }
+
+    &.hide {
+        opacity: 0.0;
+    }
+
+    > .haku-scroll-bar {
+        position: absolute;
+        background: #666666;
+        border-radius: $scroll-width;
+        transition: opacity $transition;
+        outline: none !important;
+        z-index: 2;
+    }
+
+    > .haku-scroll-rail {
+        position: absolute;
+        border-radius: $scroll-width;
+        background: #CCCCCC;
+        z-index: 1;
+        transition: opacity $transition;
+    }
+
+    > .haku-scroll-tool-start {
+        cursor: pointer;
+        position: absolute;
+        font-size: 16px;
+        right: $scroll-bar-padding;
+        color: #333333;
+        transition: opacity $transition;
+        user-select: none;
+    }
+
+    > .haku-scroll-tool-end {
+        cursor: pointer;
+        position: absolute;
+        font-size: 16px;
+        right: $scroll-bar-padding;
+        color: #333333;
+        transition: opacity $transition;
+        user-select: none;
+    }
+
+    &.hide-btn {
+
+        > .haku-scroll-tool-start {
+            display: none;
+        }
+
+        > .haku-scroll-tool-end {
+            display: none;
+        }
+    }
+}

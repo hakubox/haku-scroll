@@ -22,7 +22,6 @@
 
 <script>
 import liike from 'liike';
-import { clearTimeout } from 'timers';
 
 const scrollMove = (target, { x = null, y = null }) => {
     if(y) target.scrollTop = y;
@@ -154,7 +153,7 @@ export default {
         scrollBodyLeft : 0,
         startDragOrigin : false,        //是否开始点击中键滚动
         tempLocation : { x: 0, y: 0 },  //临时用于计算的鼠标点击坐标点
-        elScrollTop : 0,                //wheel时临时计算的滚动条滚动距离
+        elScrollTop : 0,                //滚动条滚动距离，需要和this.scrollBody.scrollTop同步
         elScrollLeft : 0
     }),
     destroyed() {
@@ -177,7 +176,8 @@ export default {
         this.scrollBody.removeEventListener('scroll', scrollBodyScroll.bind(this));
         this.scroll.removeEventListener('mousedown', scrollMouseDown.bind(this));
         this.scroll.removeEventListener('mouseleave', scrollMouseLeave.bind(this));
-
+        //组件销毁
+        this.$emit('ondestroy', this);
     },
     methods: {
         /**
@@ -255,7 +255,7 @@ export default {
             });
         },
         /**
-         * @method 获取组件离离顶部的间距
+         * @method 获取距离视窗顶部的像素
          */
         getScrollTop() {
             let _el = this.scroll;
@@ -269,7 +269,7 @@ export default {
             return result;
         },
         /**
-         * @method 获取组件离离左部的间距
+         * @method 获取距离视窗左边缘的像素
          */
         getScrollLeft() {
             let _el = this.scroll;
@@ -330,6 +330,10 @@ export default {
             this.isVerticalBarDrag = false;
             this.isHorizontalBarDrag = false;
             this.isContentDrag = false;
+
+            this.elScrollTop = this.scrollBody.scrollTop;
+            this.elScrollLeft = this.scrollBody.scrollLeft;
+
             this.scrollBody.className = this.scrollBody.className.replace(/ (active-vertical|active-horizontal)/g, '');
         }
 
@@ -597,6 +601,8 @@ export default {
         //光标移出控件的事件
         scrollMouseLeave = (e) => {
             this.startDragOrigin = false;
+            this.elScrollTop = this.scrollBody.scrollTop;
+            this.elScrollLeft = this.scrollBody.scrollLeft;
             this.dragOrigin = '';
             _timer = null;
         }
@@ -644,6 +650,9 @@ export default {
             this.scrollContent.addEventListener('DOMNodeRemoved', this.refresh, false);
             this.scrollContent.addEventListener ('DOMAttrModified', this.refresh, false);
         }
+
+        //初始化
+        this.$emit('oninit', this);
     }
 }
 </script>

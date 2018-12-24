@@ -28,7 +28,9 @@
                         <strong>{{value.toFixed(1)}}</strong> / 360
                     </td>
                     <td>
-                        <haku-block :scroll-auto-hide="false" ref="box3" style="width: 200px;height: 200px;margin:auto;margin-bottom:10px;background-color:#F5F5F5;">
+                        <haku-block
+                            :scroll-auto-hide="false"
+                            style="width: 200px;height: 200px;margin:auto;margin-bottom:10px;background-color:#F5F5F5;">
                             <ol>
                                 <li v-for="item in 300">测试数据<i class="fal fa-user"></i></li>
                             </ol>
@@ -38,7 +40,7 @@
                 <tr>
                     <th>限定范围</th>
                     <th>步长</th>
-                    <th>区域 & 自动隐藏</th>
+                    <th>自动隐藏 & 滚动传递</th>
                 </tr>
                 <tr>
                     <td>
@@ -64,7 +66,11 @@
                         <strong>{{value3.toFixed(1)}}</strong> / 100
                     </td>
                     <td>
-                        <haku-block content-style="white-space: nowrap;" :horizontal="true" ref="box3" style="width: 200px;height: 200px;margin:auto;margin-bottom:10px;background-color:#F5F5F5;">
+                        <haku-block
+                            :parent-scroll="true"
+                            content-style="white-space: nowrap;"
+                            :horizontal="true"
+                            style="width: 200px;height: 200px;margin:auto;margin-bottom:10px;background-color:#F5F5F5;">
                             <ol>
                                 <li v-for="item in 30">测试数据测试数据测试数据测试数据测试数据测试数据<i class="fal fa-user"></i></li>
                             </ol>

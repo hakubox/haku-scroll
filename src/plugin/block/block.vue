@@ -5,8 +5,8 @@
                 <slot></slot>
             </div>
         </div>
-        <haku-scroll ref="scrollY" type="vertical" :is-hide="!vertical || !showVertical" :size="pageHeight" :value.sync="scrollY" @scroll="setScrollY" :max-value="scrollMaxY" class="auto-hide"></haku-scroll>
-        <haku-scroll ref="scrollX" type="horizontal" :is-hide="!horizontal || !showHorizontal" :size="pageWidth" :value.sync="scrollX" @scroll="setScrollX" :max-value="scrollMaxX" class="auto-hide"></haku-scroll>
+        <haku-scroll :hide-btn="hideButton" ref="scrollY" type="vertical" :is-hide="!vertical || !showVertical" :size="pageHeight" :value.sync="scrollY" @scroll="setScrollY" :max-value="scrollMaxY" class="auto-hide"></haku-scroll>
+        <haku-scroll :hide-btn="hideButton" ref="scrollX" type="horizontal" :is-hide="!horizontal || !showHorizontal" :size="pageWidth" :value.sync="scrollX" @scroll="setScrollX" :max-value="scrollMaxX" class="auto-hide"></haku-scroll>
     </div>
 </template>
 

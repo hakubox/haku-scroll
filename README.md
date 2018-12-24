@@ -20,15 +20,13 @@
 
 > 示例具体可参考 [App.vue页面](./src/App.vue)
 
-## 使用步骤
-
-### 安装
+## 安装
 
 ``` bash
 npm install haku-scroll --save
 ```
 
-### 引入
+## 引入
 
 ``` javascript
 //全局注册组件
@@ -42,9 +40,11 @@ new Vue({
 })
 ```
 
-### 区域 haku-block
+-----
 
-#### 组件调用
+## 区域 haku-block
+
+### 组件调用
 
 ``` html
 <haku-block>
@@ -52,7 +52,7 @@ new Vue({
 </haku-block>
 ```
 
-#### 属性
+### 属性
 
 属性名 | 类型 | 默认值 | 描述
 ---|---|---|---
@@ -68,7 +68,7 @@ watchSubTree | Boolean | false | 是否监听子节点树
 parentScroll | Boolean | false | wheel滚动事件延伸至父容器
 hideButton | Boolean | true | 隐藏按钮
 
-#### 函数
+### 函数
 
 函数名 | 参数 | 返回值 | 描述
 ---|---|---|---
@@ -77,16 +77,16 @@ refresh | config | - | 刷新/重置滚动条基本属性
 getScrollTop | - | Number | 获取距离视窗顶部的像素
 getScrollLeft | - | Number | 获取距离视窗左边缘的像素
 
-#### 事件
+### 事件
 
 事件名 | 返回参数 | 描述
 ---|---|---
 oninit | - | 组件初始化
 ondestroy | - | 组件销毁
 
-### 区域 haku-scroll
+## 区域 haku-scroll
 
-#### 组件调用
+### 组件调用
 
 ``` html
 <haku-scroll>
@@ -94,7 +94,7 @@ ondestroy | - | 组件销毁
 </haku-scroll>
 ```
 
-#### 属性
+### 属性
 
 属性名 | 类型 | 默认值 | 描述
 ---|---|---|---
@@ -109,21 +109,21 @@ maxValue | Number | - | 最大值
 minValue | Number | 0 | 最小值
 hideBtn | Boolean | true | 隐藏按钮
 
-#### 函数
+### 函数
 
 函数名 | 参数 | 返回值 | 描述
 ---|---|---|---
 scrollTo | value, isAdd = false | - | 滚动到某处
 refresh | - | - | 刷新/重置滚动条基本属性
 
-#### 事件
+### 事件
 
 事件名 | 返回参数 | 描述
 ---|---|---
 oninit | - | 组件初始化
 ondestroy | - | 组件销毁
 
-### 未完成功能
+## 未完成功能
 
 - [x] 基本功能
 - [x] 变化监听

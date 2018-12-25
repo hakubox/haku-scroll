@@ -12,6 +12,8 @@
 <img src="https://raw.githubusercontent.com/hakubox/haku-scroll/master/src/assets/printscreen.png" >
 </div>
 
+### [示例DEMO](http://47.105.164.200/scroll)
+
 ## 说明
 
 :smiley: 一款定制化滚动条，目前仅兼容PC端，兼容性为IE9+，之后会考虑增加移动端的滚动功能。

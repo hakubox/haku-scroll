@@ -1,18 +1,26 @@
-import block from './block/block';
-import scroll from './scroll/scroll';
+import HakuBlock from './block/block';
+import HakuScroll from './scroll/scroll';
 import '../assets/scss/common.scss';
+import { debug } from 'util';
 
-// 参考：https://cn.vuejs.org/v2/guide/plugins.html#%E5%BC%80%E5%8F%91%E6%8F%92%E4%BB%B6
-block.install = Vue => Vue.component(block.name, sumFunction);
-scroll.install = Vue => Vue.component(scroll.name, sumFunction);
+const components = [
+    HakuBlock,
+    HakuScroll
+];
+
+const install = function(Vue, opts = {}) {
+    components.forEach(component => {
+        console.log('安装：' + component.name);
+        Vue.component(component.name, component);
+    });
+};
 
 if (typeof window !== 'undefined' && window.Vue) {
-    (function(Vue, opts = {}) {
-    　　Vue.component(scroll.name, scroll);
-    })(window.Vue);
+    install(window.Vue);
 }
 
 export default {
-    block,
-    scroll
+    install,
+    HakuBlock,
+    HakuScroll
 };

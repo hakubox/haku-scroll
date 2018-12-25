@@ -12,6 +12,8 @@
 <img src="https://raw.githubusercontent.com/hakubox/haku-scroll/master/src/assets/printscreen.png" >
 </div>
 
+### [示例DEMO](http://47.105.164.200/scroll)
+
 ## 说明
 
 :smiley: 一款定制化滚动条，目前仅兼容PC端，兼容性为IE9+，之后会考虑增加移动端的滚动功能。
@@ -34,7 +36,7 @@ Vue.use(hakuScroll)
 //单组件引用
 import hakuScroll from 'haku-scroll'
 new Vue({
-    components: { hakuScroll, hakuBlock }
+    components: { ...hakuScroll }
 })
 ```
 
@@ -127,6 +129,7 @@ ondestroy | - | 组件销毁
 - [x] 变化监听
 - [x] 鼠标中键滚动
 - [x] 自定义滚动条样式
+- [x] 支持TypeScript
 - [ ] 自动隐藏
 - [x] 滚动限制
 - [ ] 滚动事件钩子

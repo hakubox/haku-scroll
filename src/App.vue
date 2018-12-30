@@ -19,7 +19,11 @@
                         <strong>{{value.toFixed(1)}}</strong> / 360 <div class="color-block" :style="{background:`hsl(${value},50%,50%)`}"></div>
                     </td>
                     <td>
+                        <label style="display:inline-block;margin-bottom: 5px;">
+                            <input type="checkbox" v-model="sc2Disabled"> 禁用
+                        </label>
                         <haku-scroll ref="sc2"
+                            :disabled="sc2Disabled"
                             type="horizontal"
                             :value.sync="value"
                             :max-value="360"
@@ -96,6 +100,7 @@ export default {
             value: 0,
             value2: 0,
             value3: 0,
+            sc2Disabled: false
         }
     },
     methods: {

@@ -100,7 +100,8 @@ ondestroy | - | 组件销毁
 
 属性名 | 类型 | 默认值 | 描述
 ---|---|---|---
-isHide | Boolean | false | 是否隐藏
+disabled | Boolean | false | 是否禁用
+hidden | Boolean | false | 是否隐藏
 type | String | - | 滚动条类型（vertical/horizontal）
 min | Number | 0 | 可操作最小值
 max | Number | 0 | 可操作最大值（0为不设最大值）
@@ -134,7 +135,8 @@ ondestroy | - | 组件销毁
 - [x] 支持TypeScript
 - [x] 自动隐藏
 - [x] 滚动限制
-- [ ] 滚动事件钩子
+- [x] 滚动事件钩子
+- [x] 禁用
 - [ ] 扩展至移动端
 - [ ] 拆分为独立js组件
 - [ ] 自定义工具按钮

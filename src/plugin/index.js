@@ -1,7 +1,6 @@
 import HakuBlock from './block/block';
 import HakuScroll from './scroll/scroll';
 import '../assets/scss/common.scss';
-import { debug } from 'util';
 
 const components = [
     HakuBlock,

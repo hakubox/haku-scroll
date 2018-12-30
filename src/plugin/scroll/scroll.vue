@@ -3,7 +3,8 @@
             'vertical': type==='vertical',
             'horizontal': type==='horizontal',
             'hide-btn': hideBtn,
-            'scroll-hide': isHide
+            'scroll-hide': hidden,
+            'scroll-disabled': disabled
         }" class="haku-scroll">
         <div class="haku-scroll-bar" tabindex="-1"></div>
         <div class="haku-scroll-rail"></div>
@@ -19,8 +20,10 @@ import default_mixin from '../mixins'
 //局部事件声明
 //根文档鼠标放开事件
 function documentMouseUp(e) {
-    this.isDrag = false;
-    this.scroll.className = this.scroll.className.replace(/ active/g, '');
+    if(this.disabled !== true) {
+        this.isDrag = false;
+        this.scroll.className = this.scroll.className.replace(/ active/g, '');
+    }
 }
 
 //根文档鼠标移动事件
@@ -39,39 +42,43 @@ function documentMouseMove(e) {
 
 //滑块鼠标按下事件
 function verticalBarMouseDown(e) {
-    if(e.button == 0) {
-        this.tempValue = this.value;
-        if(this.type === 'vertical') {
-            this.tempLocation = e.pageY;
-        } else if(this.type === 'horizontal') {
-            this.tempLocation = e.pageX;
+    if(this.disabled !== true) {
+        if(e.button == 0) {
+            this.tempValue = this.value;
+            if(this.type === 'vertical') {
+                this.tempLocation = e.pageY;
+            } else if(this.type === 'horizontal') {
+                this.tempLocation = e.pageX;
+            }
+            this.scroll.className = this.scroll.className.split(' ').concat(['active']).join(' ');
+            this.isDrag = true;
+            e.stopPropagation();
+            e.preventDefault();
         }
-        this.scroll.className = this.scroll.className.split(' ').concat(['active']).join(' ');
-        this.isDrag = true;
-        e.stopPropagation();
-        e.preventDefault();
     }
 }
 
 //鼠标按下事件
 function railMouseDown(e) {
-    if(e.button == 0) {
-        //this.scrollTo(this.maxValue * (e.offsetY / this.scrollRail.offsetHeight));
-        if(this.type == 'vertical') {
-            if(e.offsetY < this.valueOfPixel) {
-                this.scrollTo(this.value - this.size);
-            } else if(e.offsetY > this.valueOfPixel + this.scrollBar.offsetHeight) {
-                this.scrollTo(this.value + this.size);
+    if(this.disabled !== true) {
+        if(e.button == 0) {
+            //this.scrollTo(this.maxValue * (e.offsetY / this.scrollRail.offsetHeight));
+            if(this.type == 'vertical') {
+                if(e.offsetY < this.valueOfPixel) {
+                    this.scrollTo(this.value - this.size);
+                } else if(e.offsetY > this.valueOfPixel + this.scrollBar.offsetHeight) {
+                    this.scrollTo(this.value + this.size);
+                }
+            } else if(this.type == 'horizontal') {
+                if(e.offsetY < this.valueOfPixel) {
+                    this.scrollTo(this.value - this.size);
+                } else if(e.offsetY > this.valueOfPixel + this.scrollBar.offsetHeight) {
+                    this.scrollTo(this.value + this.size);
+                }
             }
-        } else if(this.type == 'horizontal') {
-            if(e.offsetY < this.valueOfPixel) {
-                this.scrollTo(this.value - this.size);
-            } else if(e.offsetY > this.valueOfPixel + this.scrollBar.offsetHeight) {
-                this.scrollTo(this.value + this.size);
-            }
+            e.stopPropagation();
+            e.preventDefault();
         }
-        e.stopPropagation();
-        e.preventDefault();
     }
 }
 
@@ -85,9 +92,16 @@ export default {
     },
     props: {
         /**
-         * @property {Boolean} [isHide=true] 是否显示
+         * @property {Boolean} [disabled=false] 是否禁用
          */
-        isHide: {
+        disabled: {
+            type: Boolean,
+            default: false
+        },
+        /**
+         * @property {Boolean} [hidden=true] 是否显示
+         */
+        hidden: {
             type: Boolean,
             default: false
         },

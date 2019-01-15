@@ -8,8 +8,8 @@
         }" class="haku-scroll">
         <div class="haku-scroll-bar" tabindex="-1"></div>
         <div class="haku-scroll-rail"></div>
-        <i class="haku-scroll-tool-up fas fa-caret-up" @click="scrollBody.scrollTop = 0"></i>
-        <i class="haku-scroll-tool-down fas fa-caret-down" @click="scrollBody.scrollTop = scrollContent.offsetHeight"></i>
+        <i v-if="hideBtn !== false" class="haku-scroll-tool-up fas fa-caret-up" @click="scrollBody.scrollTop = 0"></i>
+        <i v-if="hideBtn !== false" class="haku-scroll-tool-down fas fa-caret-down" @click="scrollBody.scrollTop = scrollContent.offsetHeight"></i>
     </div>
 </template>
 
@@ -239,10 +239,10 @@ export default {
         refresh() {
             if (this.type === 'vertical') {
                 let _height = this.scrollRail.offsetHeight * this.size / (this.maxValue - this.minValue);
-                this.scrollBar.style.height = (_height < this.barMinSize ? this.barMinSize : _height) + 'px';
+                this.scrollBar.style.height = Math.min(Math.max(this.barMinSize, _height), this.scrollRail.offsetHeight) + 'px';
             } else if(this.type === 'horizontal') {
                 let _width = this.scrollRail.offsetWidth * this.size / (this.maxValue - this.minValue);
-                this.scrollBar.style.width = (_width < this.barMinSize ? this.barMinSize : _width) + 'px';
+                this.scrollBar.style.width = Math.min(Math.max(this.barMinSize, _width), this.scrollRail.offsetWidth) + 'px';
             }
             this.setLocation();
         },

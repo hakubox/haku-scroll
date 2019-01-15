@@ -9,7 +9,6 @@ const components = [
 
 const install = function(Vue, opts = {}) {
     components.forEach(component => {
-        console.log('安装：' + component.name);
         Vue.component(component.name, component);
     });
 };
